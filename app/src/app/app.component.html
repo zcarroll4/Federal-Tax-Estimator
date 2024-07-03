@@ -1,0 +1,39 @@
+<div class="container py-5">
+  <h1>Federal Tax Estimator:</h1>
+  <hr />
+  <div class="row vh-100">
+    <div class="col-6">
+      <div class="row">
+        <h2>Net Income:</h2>
+        <div class="col-8">
+          <input (ngModelChange)="calcTaxes()" type="number" style="font-size: 45px;" class="text-center form-control" [(ngModel)]="income" />
+        </div>
+      </div>
+      <div class="row my-5">
+        <h2>Federal Taxes Paid YTD:</h2>
+        <div class="col-8">
+          <input (ngModelChange)="calcTaxes()" type="number" style="font-size: 45px;" class="form-control text-center" [(ngModel)]="taxes" />
+        </div>
+      </div>
+    </div>
+    <div class="col-6 border-start">
+      <div class="row">
+        <h2>Projected Taxes:</h2>
+        <div class="col-8">
+          <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 45px;" class="text-center form-label">
+            {{projectedTaxes | currency : 'USD' : 'symbol' : '1.0-0'}}
+          </label>
+        </div>
+      </div>
+        <div class="row my-5">
+          <h2>Status:</h2>
+          <div class="col-12">
+            <label [ngClass]="projectedResult ? 'visible' : 'invisible'"style="font-size: 35px;" class="text-start form-label">
+              You're on pace for a refund of {{projectedResult}}. ✅
+            </label>
+          </div>
+        </div>
+    </div>
+
+  </div>
+</div>
