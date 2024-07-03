@@ -1,38 +1,128 @@
 <div class="container py-5">
-  <h1>Federal Tax Estimator:</h1>
+  <div class="row">
+    <div class="col-10">
+      <h1>Federal Tax Estimator:</h1>
+    </div>
+    <div class="col">
+      <a class="m-auto" style="text-decoration-line:none; font-size: 45px;" href="/">🔄</a>
+    </div>
+  </div>
   <hr />
   <div class="row vh-100">
     <div class="col-6">
       <div class="row">
-        <h2>Net Income:</h2>
-        <div class="col-8">
-          <input (ngModelChange)="calcTaxes()" type="number" style="font-size: 45px;" class="text-center form-control" [(ngModel)]="income" />
-        </div>
-      </div>
-      <div class="row my-5">
-        <h2>Federal Taxes Paid YTD:</h2>
-        <div class="col-8">
-          <input (ngModelChange)="calcTaxes()" type="number" style="font-size: 45px;" class="form-control text-center" [(ngModel)]="taxes" />
-        </div>
-      </div>
-    </div>
-    <div class="col-6 border-start">
-      <div class="row">
-        <h2>Projected Taxes:</h2>
-        <div class="col-8">
-          <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 45px;" class="text-center form-label">
-            {{projectedTaxes | currency : 'USD' : 'symbol' : '1.0-0'}}
-          </label>
-        </div>
-      </div>
-        <div class="row my-5">
-          <h2>Status:</h2>
-          <div class="col-12">
-            <label [ngClass]="projectedResult ? 'visible' : 'invisible'"style="font-size: 35px;" class="text-start form-label">
-              You're on pace for a refund of {{projectedResult}}. ✅
+        <h2>Filing Status:</h2>
+        <div class="col-12">
+          <!-- <input (ngModelChange)="calcTaxes()" type="number" style="font-size: 45px;" class="form-control text-center"
+                        [(ngModel)]="taxes" /> -->
+          <div class="form-check" style="font-size: 35px;">
+            <input class="form-check-input" type="checkbox" [checked]="separateFiling"
+              (change)="changeFilingStatus('separate')" [disabled]="jointFiling">
+            <label class="form-check-label" for="flexCheckDefault">
+              Single or Married Filing Separately
+            </label>
+          </div>
+          <div class="form-check" style="font-size: 35px;">
+            <input class="form-check-input" type="checkbox" [checked]="jointFiling" (change)="changeFilingStatus('joint')"
+              [disabled]="separateFiling">
+            <label class="form-check-label" for="flexCheckChecked">
+              Married Filing Jointly
             </label>
           </div>
         </div>
+      </div>
+      <div class="row my-3">
+        <h2>Income (Minus 401k/HSA):</h2>
+        <div class="col-8">
+          <input (keyup)="calcTaxes()" type="number" style="font-size: 45px;" class="text-center form-control"
+            [(ngModel)]="income" />
+        </div>
+      </div>
+      <div class="row my-5">
+        <h2>Taxes Paid:</h2>
+        <div class="col-8">
+          <input (keyup)="calcTaxes()" type="number" style="font-size: 45px;" class="form-control text-center"
+            [(ngModel)]="taxesPaid" />
+        </div>
+      </div>
+
+    </div>
+    <div class="col-6 border-start">
+      <div class="row">
+        <h2>Income Calculation:</h2>
+        <div class="col-12">
+          <table class="table border">
+            <tbody>
+              <tr>
+                <td><strong>Total Income</strong></td>
+                <td>{{income | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+              <tr>
+                <td>Standard Deduction</td>
+                <td>{{standardDeduction | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+              <tr>
+                <td>Taxable Income</td>
+                <td>{{taxableIncome | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+              <tr>
+                <td><strong>Taxes Due</strong></td>
+                <td>{{taxesDue | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+              <tr>
+                <td>Taxes Paid</td>
+                <td>{{taxesPaid | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+            </tbody>
+          </table>
+          <!-- <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 35px;" class="text-center form-label">
+            <strong>Gross: </strong>{{income | currency : 'USD' : 'symbol' : '1.0-0'}}
+          </label> -->
+        </div>
+        <!-- <div class="col-12">
+          <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 35px;" class="text-center form-label">
+            <strong>Standard Deduction: </strong>-{{standardDeduction | currency : 'USD' : 'symbol' : '1.0-0'}}
+          </label>
+        </div> -->
+        <!-- <div class="col-12">
+          <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 35px;" class="text-center form-label">
+            <strong>Taxable: </strong>{{taxableIncome | currency : 'USD' : 'symbol' : '1.0-0'}}
+          </label>
+        </div> -->
+      </div>
+      <!-- <div class="row my-3">
+        <h2>Projected Taxes:</h2>
+        <div class="col-8">
+          <label [ngClass]="projectedTaxes ? 'visible' : 'invisible'" style="font-size: 45px;"
+            class="text-center form-label">
+            {{taxesDue | currency : 'USD' : 'symbol' : '1.0-0'}}
+          </label>
+        </div>
+      </div> -->
+      <div class="row my-3">
+        <h2>Status:</h2>
+        <div class="col-12">
+          <label [ngClass]="projectedResult ? 'visible' : 'invisible'" style="font-size: 35px;"
+            class="text-start form-label">
+            <ng-container *ngIf="projectedResult&&projectedResult>0">
+              You're on pace for a refund of {{projectedResult | currency : 'USD' : 'symbol' : '1.0-0'}}. ✅
+            </ng-container>
+            <ng-container *ngIf="projectedResult&&projectedResult<0">
+              You're on pace for a balance due of {{projectedResult | currency : 'USD' : 'symbol' : '1.0-0'}}. ❌
+            </ng-container>
+          </label>
+        </div>
+        <ng-template [ngIf]="isLoading" #loading>
+          <div class="loading-overlay">
+            <div class="loading-spinner">
+              <div class="spinner-border" role="status">
+                <span class="sr-only"></span>
+              </div>
+            </div>
+          </div>
+        </ng-template>
+      </div>
+
     </div>
 
   </div>
