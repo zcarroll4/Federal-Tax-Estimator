@@ -1,6 +1,6 @@
 <div class="container py-5">
   <div class="row">
-    <div class="col-10">
+    <div class="col-8 col-md-10">
       <h1>Federal Tax Estimator:</h1>
     </div>
     <div class="col">
@@ -9,7 +9,7 @@
   </div>
   <hr />
   <div class="row vh-100">
-    <div class="col-6">
+    <div class="col-12 col-md-6">
       <div class="row">
         <h2>Filing Status:</h2>
         <div class="col-12">
@@ -33,21 +33,21 @@
       </div>
       <div class="row my-3">
         <h2>Income (Minus 401k/HSA):</h2>
-        <div class="col-8">
+        <div class="col-12 col-md-10">
           <input (keyup)="calcTaxes()" type="number" style="font-size: 45px;" class="text-center form-control"
             [(ngModel)]="income" />
         </div>
       </div>
       <div class="row my-5">
         <h2>Taxes Paid:</h2>
-        <div class="col-8">
+        <div class="col-12 col-md-10">
           <input (keyup)="calcTaxes()" type="number" style="font-size: 45px;" class="form-control text-center"
             [(ngModel)]="taxesPaid" />
         </div>
       </div>
 
     </div>
-    <div class="col-6 border-start">
+    <div class="col-12 col-md-6 border-start">
       <div class="row">
         <h2>Income Calculation:</h2>
         <div class="col-12">
@@ -66,12 +66,12 @@
                 <td>{{taxableIncome | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
               </tr>
               <tr>
-                <td><strong>Taxes Due</strong></td>
-                <td>{{taxesDue | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
-              </tr>
-              <tr>
                 <td>Taxes Paid</td>
                 <td>{{taxesPaid | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
+              </tr>
+              <tr>
+                <td><strong>Estimated Taxes Due</strong></td>
+                <td>{{taxesDue | currency : 'USD' : 'symbol' : '1.0-0'}}</td>
               </tr>
             </tbody>
           </table>

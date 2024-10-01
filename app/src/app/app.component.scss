@@ -12,7 +12,16 @@
   font-size: 25px;
   position: absolute;
   top: 50%;
-  left: 40%;
+  left: 50%;
   transform: translate(-50%, -50%);
   -webkit-transform: translate(-50%, -50%);
+}
+
+@media (width <= 769px) {
+  .loading-overlay {
+    display: none;
+    width: 100%;
+    top: 700px;
+    // right: unset;
+  }
 }
